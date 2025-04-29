@@ -4,8 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Priyanshu – UX Designer</title>
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Favicon: External crown PNG -->
+  <!-- Using Icons8 crown in accent orange -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://img.icons8.com/ios-filled/64/FFA500/crown.png">
+  <link rel="shortcut icon" href="https://img.icons8.com/ios-filled/64/FFA500/crown.png">
+
   <style>
     :root {
       --font-heading: 'Poppins', sans-serif;
@@ -23,9 +30,7 @@
       font-family: var(--font-heading);
       background: var(--color-bg);
       color: var(--color-text);
-      /* allow normal scrolling */
       min-height: 100vh;
-      /* overflow default: visible */
       display: flex;
       flex-direction: column;
     }
@@ -141,20 +146,17 @@
       margin-right: 1.5rem;
     }
 
-    /* Modern scroll-to-footer button */
+    /* Scroll-to-footer button */
     #scrollToFooter {
       position: fixed;
       right: 1.5rem;
       bottom: 1.5rem;
-      background: rgba(255, 165, 0, 0.9);
+      background: rgba(255,165,0,0.9);
       backdrop-filter: blur(4px);
-      color: #fff;
       border: none;
       border-radius: 50%;
       width: 3.5rem;
       height: 3.5rem;
-      font-size: 0;
-      cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
@@ -189,27 +191,23 @@
   </nav>
 
   <div class="content">
-    <p>
-      Hi, I’m Priyanshu Rai, a UX designer based in Germany with over 1.5 years of experience creating delightful digital experiences, passionately diving into user research, wireframing, prototyping, and usability testing—turning complex problems into elegant solutions and occasionally transforming coffee into pixel-perfect wireframes. Let’s make something users love!
-    </p>
+    <p>Hi, I’m Priyanshu Rai, a UX designer based in Germany with over 1.5 years of experience creating delightful digital experiences, passionately diving into user research, wireframing, prototyping, and usability testing—turning complex problems into elegant solutions and occasionally transforming coffee into pixel-perfect wireframes. Let’s make something users love!</p>
   </div>
 
   <footer>
     <div class="social">
       <a href="mailto:priyanshurai5432@gmail.com">priyanshurai5432@gmail.com</a>
       <a href="https://www.linkedin.com/in/priyanshu-rai-4531001a0/" target="_blank">LinkedIn</a>
-      <a href="https://www.behance.net/priyanshu_rai/projects" target="_blank">Behance</a>
+      <a href="https://www.behance.net/priyanshurai_rai/projects" target="_blank">Behance</a>
     </div>
     <div class="resume">
       <a href="https://drive.google.com/file/d/1en2V_uFCep4cxCzM84-6fxOmNpHCuZmw/view?usp=sharing" target="_blank">View Resume</a>
     </div>
   </footer>
 
-  <!-- Scroll-to-footer button with modern SVG icon -->
+  <!-- Scroll-to-footer button -->
   <button id="scrollToFooter" aria-label="Scroll to footer">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 16.5l-7-7 1.4-1.4L12 13.7l5.6-5.6L19 9.5z"/>
-    </svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5l-7-7 1.4-1.4L12 13.7l5.6-5.6L19 9.5z"/></svg>
   </button>
 
   <script>
@@ -217,32 +215,20 @@
     const currentPage = window.location.pathname.split('/').pop();
     document.querySelectorAll('.menu a').forEach(link => {
       const linkPage = link.getAttribute('href').split('/').pop();
-      if (linkPage === currentPage) {
-        link.classList.add('active');
-      }
+      if (linkPage === currentPage) link.classList.add('active');
     });
 
     // Scroll-to-footer behavior
     const scrollBtn = document.getElementById('scrollToFooter');
     const footer = document.querySelector('footer');
+    scrollBtn.addEventListener('click', () => footer.scrollIntoView({ behavior: 'smooth' }));
 
-    scrollBtn.addEventListener('click', () =>
-      footer.scrollIntoView({ behavior: 'smooth' })
-    );
-
-    // Toggle visibility based on footer intersection
+    // Observe footer visibility
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) {
-          scrollBtn.classList.add('show');
-          scrollBtn.classList.remove('hide');
-        } else {
-          scrollBtn.classList.add('hide');
-          scrollBtn.classList.remove('show');
-        }
+        scrollBtn.classList.toggle('show', !entry.isIntersecting);
       });
     }, { threshold: 0 });
-
     observer.observe(footer);
   </script>
 </body>
