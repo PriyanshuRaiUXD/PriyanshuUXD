@@ -23,17 +23,19 @@
       font-family: var(--font-heading);
       background: var(--color-bg);
       color: var(--color-text);
-      height: 100vh;
+      /* allow normal scrolling */
+      min-height: 100vh;
+      /* overflow default: visible */
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
     /* Logo & nav */
     nav {
-      position: absolute;
+      position: sticky;
       top: 0;
-      width: 100%;
+      background: var(--color-bg);
+      z-index: 10;
       padding: 2rem;
       display: flex;
       justify-content: center;
@@ -63,7 +65,6 @@
       font-size: 2rem;
       color: var(--color-text);
     }
-
     .menu {
       position: absolute;
       right: 2rem;
@@ -126,8 +127,6 @@
     }
 
     footer {
-      position: relative;
-      bottom: 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -142,28 +141,39 @@
       margin-right: 1.5rem;
     }
 
-    /* Scroll-to-footer button */
+    /* Modern scroll-to-footer button */
     #scrollToFooter {
       position: fixed;
       right: 1.5rem;
       bottom: 1.5rem;
-      background: var(--color-accent);
+      background: rgba(255, 165, 0, 0.9);
+      backdrop-filter: blur(4px);
       color: #fff;
       border: none;
       border-radius: 50%;
-      width: 3rem;
-      height: 3rem;
-      font-size: 1.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      font-size: 0;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      transition: opacity .3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform .2s ease, opacity .3s ease;
+    }
+    #scrollToFooter svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: #fff;
     }
     #scrollToFooter.show {
       display: flex;
       opacity: 1;
+      transform: translateY(0);
+    }
+    #scrollToFooter.hide {
+      opacity: 0;
+      transform: translateY(20px);
     }
   </style>
 </head>
@@ -195,10 +205,13 @@
     </div>
   </footer>
 
-  <!-- Scroll-to-footer button -->
-  <button id="scrollToFooter" aria-label="Scroll to footer">↓</button>
+  <!-- Scroll-to-footer button with modern SVG icon -->
+  <button id="scrollToFooter" aria-label="Scroll to footer">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 16.5l-7-7 1.4-1.4L12 13.7l5.6-5.6L19 9.5z"/>
+    </svg>
+  </button>
 
-  <!-- Auto-highlight and scroll logic -->
   <script>
     // Highlight current nav link
     const currentPage = window.location.pathname.split('/').pop();
@@ -213,13 +226,20 @@
     const scrollBtn = document.getElementById('scrollToFooter');
     const footer = document.querySelector('footer');
 
-    scrollBtn.addEventListener('click', () => {
-      footer.scrollIntoView({ behavior: 'smooth' });
-    });
+    scrollBtn.addEventListener('click', () =>
+      footer.scrollIntoView({ behavior: 'smooth' })
+    );
 
+    // Toggle visibility based on footer intersection
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        scrollBtn.classList.toggle('show', !entry.isIntersecting);
+        if (!entry.isIntersecting) {
+          scrollBtn.classList.add('show');
+          scrollBtn.classList.remove('hide');
+        } else {
+          scrollBtn.classList.add('hide');
+          scrollBtn.classList.remove('show');
+        }
       });
     }, { threshold: 0 });
 
